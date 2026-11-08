@@ -11,19 +11,19 @@
   tasks:
 
     - name: Install packages and keep them updated
-        ansible.builtin.packages:
+      ansible.builtin.packages:
          name: "{{packages}}"
          state: latest
 
     - name: Set system timezone
-        ansible.builtin.file:
+      ansible.builtin.file:
              src:"/usr/share/zoneinfo/{{system_timezone}}"
              dest: /etc/localtime
              state: link
              force: true
 
     - name: Create the admin user
-        ansible.builtin.user:
+      ansible.builtin.user:
             name: "{{admin_user}}"
             groups: "{{admin_group}}"
             append: true
@@ -31,7 +31,7 @@
             create_home: true
 
     - name: Allow the admin group access to sudo without a password
-        ansible.builtin.copy:
+      ansible.builtin.copy:
             content: "%{{admin_group}} ALL=(ALL)NOPASSWD: ALL\n"
             dest: /etc/sudoers.d/99-ansible
             owner: root
@@ -52,16 +52,16 @@
         mode: "0644"
 
     - name: Make Sure a service is enabeld and running
-     ansible.builtin.service:
+      ansible.builtin.service:
         name: "{{managed_service}}"
         state: started
         enabled: true
 
     - name: Schedule ansible-pull to run every 30 minutes
       ansible.builtin.cron:
-      name: ansible-pull
-      user: root
-      minute: "*/30"
-      job: "/usr/bin/ansible-pull -o -U {{ansible_pull_repo}} >> /var/log/ansible-pull.log"
-      cron_file: ansible-pull
+        name: ansible-pull
+        user: root
+        minute: "*/30"
+        job: "/usr/bin/ansible-pull -o -U {{ansible_pull_repo}} >> /var/log/ansible-pull.log"
+        cron_file: ansible-pull
         
