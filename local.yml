@@ -1,7 +1,7 @@
 ---
 
 - name: Basic system setup
-  host: localhost
+  hosts: localhost
   connection: local
   become: true
 
@@ -11,7 +11,7 @@
   tasks:
 
     - name: Install packages and keep them updated
-      ansible.builtin.packages:
+      ansible.builtin.package:
          name: "{{packages}}"
          state: latest
 
@@ -37,19 +37,19 @@
             owner: root
             group: root
             mode: "0440"
-            valiudate: "visudo -cf %s"
+            validate: "visudo -cf %s"
 
     - name: Write a message of the day
       ansible.builtin.copy:
-        content:
-        **********
-        {{ansible_facts['hostname']}} is managed by ansible-pull
-        {{ansible_facts['distribution']}} {{anisble_facts['distribution_version']}}
-        **********
-        dest: /etc/motd
-        owner: root
-        group: root
-        mode: "0644"
+        content: |
+            **********
+            {{ansible_facts['hostname']}} is managed by ansible-pull
+            {{ansible_facts['distribution']}} {{ansible_facts['distribution_version']}}
+            **********
+            dest: /etc/motd
+            owner: root
+            group: root
+            mode: "0644"
 
     - name: Make Sure a service is enabeld and running
       ansible.builtin.service:
