@@ -16,4 +16,4 @@ packages:
     - vim
     - wget
 
-    system_timezon: 'America/Chicago'
+    system_timezone: 'America/Chicago'
