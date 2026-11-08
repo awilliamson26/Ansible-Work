@@ -17,7 +17,7 @@
 
     - name: Set system timezone
       ansible.builtin.file:
-             src:"/usr/share/zoneinfo/{{system_timezone}}"
+             src: "/usr/share/zoneinfo/{{system_timezone}}"
              dest: /etc/localtime
              state: link
              force: true
